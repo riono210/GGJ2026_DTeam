@@ -14,6 +14,7 @@ public class SpiritSystem : MonoBehaviour
 
     private void Attack(InputAction.CallbackContext ctx)
     {
+        Debug.Log("Don!");
         const float maxRange = 3;
         // TODO MASK FOR SPIRITS!
         const int spiritLayerMask = 6;
