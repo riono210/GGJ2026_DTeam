@@ -10,9 +10,11 @@ public class StageMover : MonoBehaviour
     
     // 生成するアイテムPrefabリスト
     [SerializeField] private List<GameObject> maskItemObjectList;
+    [SerializeField] private List<GameObject> spiritItemObjectList;
     [SerializeField] private List<GameObject> obstacleObjectList;
     // それぞれの重み
     [SerializeField] private List<float> maskItemWeights;
+    [SerializeField] private List<float> spiritItemWeights;
     [SerializeField] private List<float> obstacleWeights;
 
     [Header("Spawn Settings")]
@@ -21,6 +23,7 @@ public class StageMover : MonoBehaviour
     [SerializeField] private List<Transform> lanePoints;
     [SerializeField] private List<float> laneWeights;
     [SerializeField, Range(0f, 1f)] private float obstacleChance = 0.7f;
+    [SerializeField, Range(0f, 1f)] private float spiritChance = 0.2f;
     [SerializeField] private int maxSameLane = 2;
     [SerializeField] private float minSpacing = 6f;
     [SerializeField] private float maxSpacing = 12f;
@@ -113,7 +116,7 @@ public class StageMover : MonoBehaviour
 
     public void AddSpeed(float speed)
     {
-        currentStageSpeed.Value += Mathf.Max(0f, speed);
+        currentStageSpeed.Value += speed;
     }
 
     private float GetNextSpacing()
@@ -127,16 +130,13 @@ public class StageMover : MonoBehaviour
     private void SpawnOnce()
     {
         // 設定不足なら何もしない
-        if (maskItemObjectList == null || obstacleObjectList == null)
+        if (maskItemObjectList == null && spiritItemObjectList == null && obstacleObjectList == null)
         {
             return;
         }
 
-        // アイテム/障害物の抽選
-        var spawnObstacle = Random.value < obstacleChance;
-        var prefab = spawnObstacle
-            ? PickWeighted(obstacleObjectList, obstacleWeights)
-            : PickWeighted(maskItemObjectList, maskItemWeights);
+        // アイテム/障害物/スピリットの抽選
+        var prefab = PickSpawnPrefab();
 
         // 生成対象が無ければ中断
         if (prefab == null)
@@ -159,6 +159,49 @@ public class StageMover : MonoBehaviour
         // Speed設定: 対象のライフサイクルに紐づける
         currentStageSpeed.Subscribe(moveObject.SetSpeed).AddTo(moveObject.Disposables);
         instance.name = prefab.name;
+    }
+
+    private GameObject PickSpawnPrefab()
+    {
+        var obstacleWeight = Mathf.Clamp01(obstacleChance);
+        var spiritWeight = Mathf.Clamp01(spiritChance);
+        var itemWeight = Mathf.Max(0f, 1f - obstacleWeight - spiritWeight);
+
+        var total = obstacleWeight + spiritWeight + itemWeight;
+        if (total <= 0f)
+        {
+            return PickFirstAvailablePrefab();
+        }
+
+        var roll = Random.value * total;
+        if (roll < obstacleWeight)
+        {
+            return PickWeighted(obstacleObjectList, obstacleWeights) ?? PickFirstAvailablePrefab();
+        }
+
+        if (roll < obstacleWeight + spiritWeight)
+        {
+            return PickWeighted(spiritItemObjectList, spiritItemWeights) ?? PickFirstAvailablePrefab();
+        }
+
+        return PickWeighted(maskItemObjectList, maskItemWeights) ?? PickFirstAvailablePrefab();
+    }
+
+    private GameObject PickFirstAvailablePrefab()
+    {
+        var prefab = PickWeighted(maskItemObjectList, maskItemWeights);
+        if (prefab != null)
+        {
+            return prefab;
+        }
+
+        prefab = PickWeighted(spiritItemObjectList, spiritItemWeights);
+        if (prefab != null)
+        {
+            return prefab;
+        }
+
+        return PickWeighted(obstacleObjectList, obstacleWeights);
     }
 
     private int PickLaneIndex()
