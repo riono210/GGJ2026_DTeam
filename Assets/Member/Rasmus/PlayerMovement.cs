@@ -1,6 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum Lane
+{
+    Left = 0,
+    Right = 1
+}
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float laneDistance = 25.0f;
@@ -13,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     Vector3 targetPosition;
     PlayerActions playerActions;
     InputAction moveAction;
+
     Lane currentLane;
     private float movementDelta = 0;
 
