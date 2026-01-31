@@ -8,6 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Member/Gushi/Scene/TitleScene.unity
+    guid: 511d9578f5736d349ad444798505516e
+  - enabled: 1
+    path: Assets/Member/Gushi/Scene/MainScene.unity
+    guid: df7179cb8b550904c9ff2fe012347504
+  - enabled: 1
+    path: Assets/Member/Gushi/Scene/EndScene.unity
+    guid: 1240a2b83adb58d4a82deeb7fb115957
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
