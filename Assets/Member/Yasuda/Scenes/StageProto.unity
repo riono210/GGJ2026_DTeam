@@ -207,7 +207,7 @@ Transform:
   m_GameObject: {fileID: 111109747}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: -60}
+  m_LocalPosition: {x: 0, y: 0.5, z: -56.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1191,6 +1191,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 961700620}
+  - component: {fileID: 3424281309}
   m_Layer: 0
   m_Name: GoalAnchor
   m_TagString: Untagged
@@ -1214,6 +1215,18 @@ Transform:
   - {fileID: 1849237722}
   m_Father: {fileID: 1859709324}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3424281309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961700619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8be3914204ec4feeaf93fc0d8da17fcf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1191447811
 GameObject:
   m_ObjectHideFlags: 0
@@ -1374,6 +1387,7 @@ GameObject:
   - component: {fileID: 1390781131}
   - component: {fileID: 1390781130}
   - component: {fileID: 1390781129}
+  - component: {fileID: 1390781132}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1474,6 +1488,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1390781127}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1390781132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390781127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14c363bc6709ef1fe8fa615dfbd8de98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  laneDistance: 25
+  laneSwitchSpeed: 10
+  bonusSpeedAmplitude: 2
+  speedCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1416480938
 GameObject:
   m_ObjectHideFlags: 0
@@ -1987,7 +2022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a781dcb40c2d43acb277ad24ad2f8d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageMover
-  playerMovement: {fileID: 0}
+  playerObject: {fileID: 1390781127}
   maskItemObjectList:
   - {fileID: 3635669429325954729, guid: 6800bd7d7301a44818341ec85357aaef, type: 3}
   - {fileID: 4332627221688721525, guid: 72464ec8594ec473299a2a0a41f66e00, type: 3}
@@ -2021,6 +2056,8 @@ MonoBehaviour:
   maxSameLane: 2
   minSpacing: 6
   maxSpacing: 12
+  sceneMoveObjects:
+  - {fileID: 3424281309}
   defaultSpeed: 30
 --- !u!1 &1957093425
 GameObject:

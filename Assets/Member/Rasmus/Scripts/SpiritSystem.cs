@@ -1,3 +1,4 @@
+using R3;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -5,6 +6,10 @@ using UnityEngine.InputSystem;
 public class SpiritSystem : MonoBehaviour
 {
     PlayerActions playerActions;
+    
+    private Subject<MoveObjectHitEventType> spiritHitSubject;
+    public Observable<MoveObjectHitEventType> SpiritHitObservable => spiritHitSubject;
+    
     void Awake()
     {
         playerActions = new PlayerActions();

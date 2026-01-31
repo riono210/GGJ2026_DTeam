@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class StageMover : MonoBehaviour
 {
-    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private GameObject playerObject;
     
     // 生成するアイテムPrefabリスト
     [SerializeField] private List<GameObject> maskItemObjectList;
@@ -28,9 +28,18 @@ public class StageMover : MonoBehaviour
     [SerializeField] private float minSpacing = 6f;
     [SerializeField] private float maxSpacing = 12f;
 
+    [Header("Stage Objects")]
+    [SerializeField] private List<IMoveObject> sceneMoveObjects;
+
     [Header("Speed")]
     [SerializeField] private float defaultSpeed = 10f;
 
+    // Player Component
+    private PlayerMovement playerMovement;
+    private PlayerHealth playerHealth;
+    private SpiritSystem spiritSystem;
+    
+    
     private bool isInitialized;
     private List<IMoveObject> moveObjects;
     private ReactiveProperty<float> currentStageSpeed;
@@ -38,6 +47,7 @@ public class StageMover : MonoBehaviour
     private float nextSpawnAt;
     private int lastLaneIndex = -1;
     private int sameLaneCount;
+    private CompositeDisposable hitEventDisposable;
 
     public void Start()
     {
@@ -54,6 +64,12 @@ public class StageMover : MonoBehaviour
     /// </summary>
     public void Init()
     {
+        // playerのcomponent取得
+        playerMovement = playerObject.GetComponent<PlayerMovement>();
+        playerHealth = playerObject.GetComponent<PlayerHealth>();
+        spiritSystem = spiritSystem.GetComponent<SpiritSystem>();
+        
+        // 生成したアイテムたちのキャッシュ
         moveObjects = new List<IMoveObject>();
         // 距離ベースのスポーン判定用ステートを初期化
         currentStageSpeed = new ReactiveProperty<float>();
@@ -62,13 +78,21 @@ public class StageMover : MonoBehaviour
         sameLaneCount = 0;
         lastLaneIndex = -1;
         nextSpawnAt = GetNextSpacing();
+        hitEventDisposable = new CompositeDisposable();
+
+        // Subscribes
+        playerHealth?.HitObservable.Subscribe(OnObstacleHit).AddTo(hitEventDisposable);
+        spiritSystem?.SpiritHitObservable.Subscribe(OnSpiritHit).AddTo(hitEventDisposable);
+        
+        
         
         isInitialized =  true;
     }
 
     private void OnDestroy()
     {
-        // No global disposables; subscriptions are bound to each IMoveObject.
+        hitEventDisposable?.Dispose();
+        currentStageSpeed?.Dispose();
     }
 
     /// <summary>
@@ -78,7 +102,7 @@ public class StageMover : MonoBehaviour
     {
         if (!isInitialized)
         {
-            Debug.LogError("StageMover not initialized!!!!!!!!!");
+            Debug.LogError("StageMover NOT initialized!!!!!!!!!");
             return;
         }
         
@@ -91,7 +115,7 @@ public class StageMover : MonoBehaviour
         }
     }
 
-    public void AddSpeed(float speed)
+    private void AddSpeed(float speed)
     {
         currentStageSpeed.Value += speed;
     }
@@ -274,5 +298,36 @@ public class StageMover : MonoBehaviour
     {
         var target = transform.Find(relativePath);
         return target != null ? target : null;
+    }
+
+    private void OnObstacleHit(MoveObjectHitEventType eventType)
+    {
+        var minusSpeed = eventType switch
+        {
+            MoveObjectHitEventType.ObstacleA => -1,
+            MoveObjectHitEventType.ObstacleB => -5,
+            MoveObjectHitEventType.ObstacleC => -10,
+            _ => 0,
+        };
+        
+        AddSpeed(minusSpeed);
+    }
+    
+    private void OnSpiritHit(MoveObjectHitEventType eventType)
+    {
+        var addSpeed = eventType switch
+        {
+            MoveObjectHitEventType.SpiritNice => 1,
+            MoveObjectHitEventType.SpiritGreat => 5,
+            MoveObjectHitEventType.SpiritExcellent => 10,
+            _ => 0,
+        };
+        
+        AddSpeed(addSpeed);
+    }
+
+    private void OnItemHit(MoveObjectHitEventType eventType)
+    {
+        // アイテムの処理        
     }
 }
