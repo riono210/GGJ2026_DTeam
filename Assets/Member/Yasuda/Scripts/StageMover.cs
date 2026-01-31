@@ -39,29 +39,6 @@ public class StageMover : MonoBehaviour
     private int lastLaneIndex = -1;
     private int sameLaneCount;
 
-    // private void OnValidate()
-    // {
-    //     // Inspector補完（未設定なら自動で参照を埋める）
-    //     if (spawnPoint == null)
-    //     {
-    //         spawnPoint = FindChildTransform("StageMarkers/SpawnPoint");
-    //     }
-    //
-    //     if (spawnParent == null)
-    //     {
-    //         spawnParent = FindChildTransform("SpawnedObjects");
-    //     }
-    //
-    //     if (lanePoints == null || lanePoints.Count != 2 || lanePoints[0] == null || lanePoints[1] == null)
-    //     {
-    //         lanePoints = new List<Transform>
-    //         {
-    //             FindChildTransform("StageMarkers/LanePointLeft"),
-    //             FindChildTransform("StageMarkers/LanePointRight")
-    //         };
-    //     }
-    // }
-
     public void Start()
     {
         Init();
