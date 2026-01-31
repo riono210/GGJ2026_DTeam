@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 
 public class StageMover : MonoBehaviour
 {
+    [SerializeField] private PlayerMovement playerMovement;
+    
     // 生成するアイテムPrefabリスト
     [SerializeField] private List<GameObject> maskItemObjectList;
     [SerializeField] private List<GameObject> obstacleObjectList;
@@ -109,9 +111,9 @@ public class StageMover : MonoBehaviour
         }
     }
 
-    public void SetSpeed(float speed)
+    public void AddSpeed(float speed)
     {
-        currentStageSpeed.Value = Mathf.Max(0f, speed);
+        currentStageSpeed.Value += Mathf.Max(0f, speed);
     }
 
     private float GetNextSpacing()
