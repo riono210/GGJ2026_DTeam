@@ -408,6 +408,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5578076804501917237, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
+      propertyPath: smallParticle
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -5578076804501917237, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
+      propertyPath: mediumParticle
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3736676081739966734, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -448,17 +456,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6393693522932541400, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
-      propertyPath: laneDistance
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6393693522932541400, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
-      propertyPath: laneSwitchSpeed
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 6393693522932541400, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
-      propertyPath: bonusSpeedAmplitude
-      value: 2
+    - target: {fileID: 7697052769582754448, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
+      propertyPath: m_Name
+      value: SpiritBurstEmitter
       objectReference: {fileID: 0}
     - target: {fileID: 7990856358548315494, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
       propertyPath: m_Name
@@ -1949,14 +1949,16 @@ MonoBehaviour:
   - {fileID: 3635669429325954729, guid: 6800bd7d7301a44818341ec85357aaef, type: 3}
   - {fileID: 4332627221688721525, guid: 72464ec8594ec473299a2a0a41f66e00, type: 3}
   - {fileID: 9150758762758956739, guid: de3123f70685a401693538024c3bcc64, type: 3}
+  spiritItemObjectList: []
   obstacleObjectList:
-  - {fileID: 7640539745901360459, guid: 437769bcabe5b4dd9829a602d17b2aac, type: 3}
-  - {fileID: 3538776461988335785, guid: d0983bfe08a9b4b1c82c7c78a5c663d3, type: 3}
+  - {fileID: 3635669429325954729, guid: 8b7379d239004eb79cf7bb269642f44d, type: 3}
+  - {fileID: 3635669429325954729, guid: 8b7379d239004eb79cf7bb269642f44d, type: 3}
   - {fileID: 4962670095506375003, guid: 8effe46c3585a42988afd213730d960c, type: 3}
   maskItemWeights:
   - 1
   - 1
   - 1
+  spiritItemWeights: []
   obstacleWeights:
   - 1
   - 1
@@ -1970,6 +1972,7 @@ MonoBehaviour:
   - 1
   - 1
   obstacleChance: 0.7
+  spiritChance: 0.2
   maxSameLane: 2
   minSpacing: 6
   maxSpacing: 12
