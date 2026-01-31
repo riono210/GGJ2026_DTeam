@@ -12,7 +12,7 @@ public enum ObstacleType
 public class ObstacleObject : IMoveObject
 {
     [SerializeField] private ObstacleType obstacleType;
-    ObstacleType ObstacleType => obstacleType;
+    public ObstacleType ObstacleType => obstacleType;
     
     // // Start is called once before the first execution of Update after the MonoBehaviour is created
     // void Start()
