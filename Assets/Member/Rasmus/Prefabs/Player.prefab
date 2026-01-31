@@ -5000,7 +5000,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c363bc6709ef1fe8fa615dfbd8de98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  laneDistance: 1.5
+  shadowPrefab: {fileID: 4940488772788069854, guid: f00cbd5f0ff80a586aaed4e5d2644182, type: 3}
   laneSwitchSpeed: 8
   bonusSpeedAmplitude: 2
   speedCurve:
