@@ -1,6 +1,5 @@
-using System;
+using R3;
 using UnityEngine;
-using UnityEngine.Assertions.Comparers;
 
 
 public class PlayerHealth : MonoBehaviour
@@ -8,6 +7,9 @@ public class PlayerHealth : MonoBehaviour
     private AudioSource audioSource;
     private AudioClip saltAudioClip;
 
+    private Subject<MoveObjectHitEventType> hitSubject;
+    public Observable<MoveObjectHitEventType> HitObservable => hitSubject;
+    
     // プレイヤーは魂HIT
     public void SoulHit()
     {
@@ -50,15 +52,18 @@ public class PlayerHealth : MonoBehaviour
                 switch (obstacle.ObstacleType)
                 {
                     case ObstacleType.None:
+                        hitSubject.OnNext(MoveObjectHitEventType.None);
                     break;
                     case ObstacleType.TypeA:
+                        hitSubject.OnNext(MoveObjectHitEventType.ObstacleA);
                     break;
                     case ObstacleType.TypeB:
+                        hitSubject.OnNext(MoveObjectHitEventType.ObstacleB);
                     break;
                     case ObstacleType.TypeC:
+                        hitSubject.OnNext(MoveObjectHitEventType.ObstacleC);
                     break;
                 }
-
             }
         }
     }
