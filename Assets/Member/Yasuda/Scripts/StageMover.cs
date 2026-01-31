@@ -20,7 +20,7 @@ public class StageMover : MonoBehaviour
     [Header("Spawn Settings")]
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private Transform spawnParent;
-    [SerializeField] private List<Transform> lanePoints;
+    [SerializeField] public List<Transform> lanePoints;
     [SerializeField] private List<float> laneWeights;
     [SerializeField, Range(0f, 1f)] private float obstacleChance = 0.7f;
     [SerializeField, Range(0f, 1f)] private float spiritChance = 0.2f;
