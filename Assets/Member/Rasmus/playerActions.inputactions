@@ -1,0 +1,77 @@
+{
+    "version": 1,
+    "name": "playerActions",
+    "maps": [
+        {
+            "name": "gameplay",
+            "id": "0a2f5ad5-b214-4325-b5a7-6c67d671a581",
+            "actions": [
+                {
+                    "name": "move",
+                    "type": "Value",
+                    "id": "c8b9a841-dbd9-4bde-a444-65fb0c92b2e5",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "attack",
+                    "type": "Button",
+                    "id": "4febf426-0904-4981-9fcd-2e5e487989b5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "KeyboardAD",
+                    "id": "308c3b97-4701-4c8e-866a-49c7c0836cfe",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "94ae2df8-4e26-4fb5-9a93-2c99848c9323",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "591d826a-8b18-4d08-ae70-1b552e2b0e4d",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "c14aa757-ce80-4d88-a931-3304102b147c",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

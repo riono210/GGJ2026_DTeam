@@ -1,3 +1,4 @@
+// For switching lanes
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,6 +22,8 @@ public class PlayerMovement : MonoBehaviour
 
     Lane currentLane;
     private float movementDelta = 0;
+    Vector3 leftPos;
+    Vector3 rightPos;
 
     private void Awake()
     {
@@ -28,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
         playerActions.Enable();
         // "performed" happens once on button down, not repeating
         playerActions.gameplay.move.performed += ctx => ReadMovement(ctx);
+        leftPos = transform.position + new Vector3(-laneDistance,0);
+        rightPos = transform.position + new Vector3(laneDistance,0);
     }
 
     private void Start()
@@ -98,8 +103,6 @@ public class PlayerMovement : MonoBehaviour
                 movementDelta += (laneSwitchSpeed + (bonusSpeed * bonusSpeedAmplitude)) * Time.deltaTime;
             }
 
-            Vector3 leftPos = new Vector3(-laneDistance,0);
-            Vector3 rightPos = new Vector3(laneDistance,0);
             transform.position = Vector3.Lerp(leftPos, rightPos, movementDelta);
         }
     }
