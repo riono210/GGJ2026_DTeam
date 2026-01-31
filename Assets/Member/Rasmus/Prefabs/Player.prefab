@@ -5063,7 +5063,5 @@ MonoBehaviour:
   minHardRange: 0.7
   minMediumRange: 1.5
   minEasyRange: 3.5
-  bigParticle: {fileID: 5952730945657456552}
-  mediumParticle: {fileID: 0}
-  smallParticle: {fileID: 0}
+  particles: {fileID: 5952730945657456552}
   numToEmit: 25
