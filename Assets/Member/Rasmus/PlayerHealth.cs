@@ -38,7 +38,7 @@ public class PlayerHealth : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "")
+        if (other.transform.tag == "Obstacle")
         {
             var obstacle = other.transform.GetComponent<ObstacleObject>();
             // obstacle.
