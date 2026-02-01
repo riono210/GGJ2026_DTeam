@@ -1090,9 +1090,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9164876001741094103, guid: 0f1206e3e5a8c43d398a012aee429b4b, type: 3}
+      propertyPath: goalObject
+      value: 
+      objectReference: {fileID: 4237950786383252629, guid: f50c8670140ea4d49bcafcd951a1b162, type: 3}
+    - target: {fileID: 9164876001741094103, guid: 0f1206e3e5a8c43d398a012aee429b4b, type: 3}
       propertyPath: playerObject
       value: 
       objectReference: {fileID: 1082615466}
+    - target: {fileID: 9164876001741094103, guid: 0f1206e3e5a8c43d398a012aee429b4b, type: 3}
+      propertyPath: appearGoalDistance
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

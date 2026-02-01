@@ -388,7 +388,8 @@ public class StageMover : MonoBehaviour
             spawnPos.x = (minX + maxX) * 0.5f;
         }
 
-        var instance = Instantiate(goalObject, spawnPos, Quaternion.identity, spawnParent);
+        var rotation = new Vector3(0, 180f, 0);
+        var instance = Instantiate(goalObject, spawnPos, Quaternion.Euler(rotation), spawnParent);
         var moveObject = instance.GetComponent<IMoveObject>();
         if (moveObject != null)
         {
