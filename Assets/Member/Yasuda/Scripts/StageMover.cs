@@ -31,6 +31,7 @@ public class StageMover : MonoBehaviour
     [SerializeField] private float maxSpacing = 12f;
 
     [Header("Stage Settings")]
+    [SerializeField] private float traveledDistance; 
     [SerializeField] private float defaultSpeed = 10f;
     [SerializeField] private float minSpeed = 1f;
     [SerializeField] private float appearGoalDistance = 100f;
@@ -56,7 +57,7 @@ public class StageMover : MonoBehaviour
     private bool isInitialized;
     private List<IMoveObject> moveObjects;
     private ReactiveProperty<float> currentStageSpeed;
-    private float traveledDistance;
+   
     private float nextSpawnAt;
     private int lastLaneIndex = -1;
     private int sameLaneCount;
