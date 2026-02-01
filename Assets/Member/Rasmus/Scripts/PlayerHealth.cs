@@ -10,28 +10,6 @@ public class PlayerHealth : MonoBehaviour
     private Subject<MoveObjectHitEventType> hitSubject =  new Subject<MoveObjectHitEventType>();
     public Observable<MoveObjectHitEventType> HitObservable => hitSubject;
     
-    // プレイヤーは魂HIT
-    public void SoulHit()
-    {
-        Debug.Log("Hit!");
-    }
-
-    public void Hurt(ObstacleType obstacleType)
-    {
-        switch (obstacleType)
-        {
-            case ObstacleType.None:
-            break;
-            case ObstacleType.TypeA:
-            break;
-            case ObstacleType.TypeB:
-            break;
-            case ObstacleType.TypeC:
-            break;
-        }
-
-    }
-
     void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "Obstacle")
@@ -40,7 +18,6 @@ public class PlayerHealth : MonoBehaviour
             // obstacle.
             if (obstacle)
             {
-                Debug.Log("IMPLEMENT COLLISION PLAYER OBSTACLE!");
                 switch (obstacle.ObstacleType)
                 {
                     case ObstacleType.None:
