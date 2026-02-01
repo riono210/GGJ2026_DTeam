@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6265488102250613299}
-  - component: {fileID: 2085555322137237819}
   - component: {fileID: 5347443230482542638}
+  - component: {fileID: 1430467849788092567}
   m_Layer: 0
   m_Name: BGM
   m_TagString: Untagged
@@ -33,24 +33,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2085555322137237819
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8869849318641396634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b26d62fdadb80c05bbbc293ca5704bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BGM
-  audioSource: {fileID: 5347443230482542638}
-  musicList:
-  - {fileID: 8300000, guid: 4bef19813184c0448a6cce9c26fc9313, type: 3}
-  - {fileID: 8300000, guid: 68e486115ab774f46aee41ee3f3e7d72, type: 3}
-  - {fileID: 8300000, guid: c6618e4aad814cb4f91d66d9ef85e5db, type: 3}
-  - {fileID: 8300000, guid: 125f81eef09abdf40bc11b6fd0bc55ee, type: 3}
 --- !u!82 &5347443230482542638
 AudioSource:
   m_ObjectHideFlags: 0
@@ -62,11 +44,11 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -1427038687103283899, guid: 93bc72c3f0cbe2a51907517aa51b955d, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 4bef19813184c0448a6cce9c26fc9313, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -148,3 +130,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1430467849788092567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8869849318641396634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a4e153fcf4c8c14da971b739327cc7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BGM
+  audioSource: {fileID: 5347443230482542638}
+  musicList: []

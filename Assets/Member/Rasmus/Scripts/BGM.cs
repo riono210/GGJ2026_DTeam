@@ -22,12 +22,18 @@ public class BGM : MonoBehaviour
         } 
 
         audioSource = GetComponent<AudioSource>();
+
+        audioSource.Play(); // quick fix for show.
     }
 
     public void PlayMusic(int index)
     {
+
+        return;
+        /* TODO: FIX LATER!
         audioSource.Stop();
         audioSource.clip = musicList[index];
         audioSource.Play();
+        */
     }
 }
