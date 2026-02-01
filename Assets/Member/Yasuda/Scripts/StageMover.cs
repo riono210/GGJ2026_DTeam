@@ -40,6 +40,12 @@ public class StageMover : MonoBehaviour
     [SerializeField] private float setHitSpeedTime = 0.3f;
     [SerializeField] private float uponSpeedMultiplier = 0.8f;
 
+    [Header("Spirit Speed Settings")]
+    [SerializeField] private float missAddSpeed = -5f;
+    [SerializeField] private float niceAddSpeed = 1f;
+    [SerializeField] private float greatAddSpeed = 5f;
+    [SerializeField] private float excellentAddSpeed = 10f;
+
     // Player Component
     private PlayerMovement playerMovement;
     private PlayerHealth playerHealth;
