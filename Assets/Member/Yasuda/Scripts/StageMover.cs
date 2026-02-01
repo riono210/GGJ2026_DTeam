@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using R3;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -33,6 +34,11 @@ public class StageMover : MonoBehaviour
 
     [Header("Speed")]
     [SerializeField] private float defaultSpeed = 10f;
+    
+    [Header("Obstacle Speed Settings")]
+    [SerializeField] private float hitObstacleSpeed = 2f;
+    [SerializeField] private float setHitSpeedTime = 0.3f;
+    [SerializeField] private float uponSpeedMultiplier = 0.8f;
 
     // Player Component
     private PlayerMovement playerMovement;
@@ -84,7 +90,10 @@ public class StageMover : MonoBehaviour
         goalObject?.StartMove(currentStageSpeed.CurrentValue);
         
         // Subscribes
-        playerHealth?.HitObservable.Subscribe(OnObstacleHit).AddTo(hitEventDisposable);
+        playerHealth?.HitObservable.SubscribeAwait(async (eventType, _ ) =>
+        {
+            await OnObstacleHit(eventType);
+        }).AddTo(hitEventDisposable);
         spiritSystem?.SpiritHitObservable.Subscribe(OnSpiritHit).AddTo(hitEventDisposable);
         
         
@@ -120,6 +129,11 @@ public class StageMover : MonoBehaviour
     private void AddSpeed(float speed)
     {
         currentStageSpeed.Value += speed;
+    }
+
+    private void ChangeSpeed(float speed)
+    {
+        currentStageSpeed.Value = speed;
     }
 
     private float GetNextSpacing()
@@ -303,8 +317,9 @@ public class StageMover : MonoBehaviour
         return target != null ? target : null;
     }
 
-    private void OnObstacleHit(MoveObjectHitEventType eventType)
+    private async UniTask OnObstacleHit(MoveObjectHitEventType eventType)
     {
+        Debug.Log($"Obstacle Hit.... {eventType}");
         var minusSpeed = eventType switch
         {
             MoveObjectHitEventType.ObstacleA => -1,
@@ -312,8 +327,15 @@ public class StageMover : MonoBehaviour
             MoveObjectHitEventType.ObstacleC => -10,
             _ => 0,
         };
-        
-        AddSpeed(minusSpeed);
+
+        var prevSpeed = currentStageSpeed.CurrentValue;
+        // 当たった衝撃でスローに
+        ChangeSpeed(hitObstacleSpeed);
+
+        await UniTask.Delay(TimeSpan.FromSeconds(setHitSpeedTime));
+
+        // 元の0.8倍で再開
+        ChangeSpeed(prevSpeed * uponSpeedMultiplier);
     }
     
     private void OnSpiritHit(MoveObjectHitEventType eventType)
