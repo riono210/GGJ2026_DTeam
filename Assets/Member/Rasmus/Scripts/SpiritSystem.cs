@@ -53,12 +53,17 @@ public class SpiritSystem : MonoBehaviour
     {
         playerActions = new PlayerActions();
             playerActions.Enable();
-            playerActions.gameplay.attack.performed += ctx => Attack(ctx);
+            playerActions.gameplay.attack.performed += Attack;
 
         startZ = transform.position.z;
 
         playerSprite = GetComponent<SpriteRenderer>();
         playerAudioSource = GetComponent<AudioSource>();
+    }
+
+    void OnDestroy()
+    {
+        playerActions.gameplay.attack.performed -= Attack;
     }
 
     void Update()
