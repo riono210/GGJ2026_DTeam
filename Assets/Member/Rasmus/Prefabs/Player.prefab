@@ -5009,6 +5009,9 @@ MonoBehaviour:
   minMediumRange: 1.5
   minEasyRange: 3.5
   particles: {fileID: 5952730945657456552}
+  fadeAmplitude: 5
+  lowestAlphaFade: 0.5
+  lowestColorDarkFade: 0.75
 --- !u!114 &1393724513470187769
 MonoBehaviour:
   m_ObjectHideFlags: 0

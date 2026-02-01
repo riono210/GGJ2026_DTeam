@@ -32,14 +32,6 @@ public class PlayerHealth : MonoBehaviour
 
     }
 
-    private void Awake()
-    {
-    }
-
-    private void Start()
-    {
-    }
-
     void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "Obstacle")

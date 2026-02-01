@@ -14,10 +14,19 @@ public class SpiritSystem : MonoBehaviour
 
     [SerializeField] private ParticleSystem particles;
 
+    [SerializeField] private float fadeAmplitude = 10f;
     private float startZ;
+    bool shouldFadeVisuals = false;
+    float fadeDelta = 1; // 1 - full visible. 0 - invisible
+
+    [SerializeField] private float lowestAlphaFade = 0.5f;
+    [SerializeField] private float  lowestColorDarkFade = 0.75f;
+
 
     private Subject<MoveObjectHitEventType> spiritHitSubject = new Subject<MoveObjectHitEventType>();
     public Observable<MoveObjectHitEventType> SpiritHitObservable => spiritHitSubject;
+
+    SpriteRenderer playerSprite;
     
     void Awake()
     {
@@ -26,6 +35,44 @@ public class SpiritSystem : MonoBehaviour
             playerActions.gameplay.attack.performed += ctx => Attack(ctx);
 
         startZ = transform.position.z;
+
+        playerSprite = GetComponent<SpriteRenderer>();
+    }
+
+    void Update()
+    {
+        if (shouldFadeVisuals)
+        {
+            fadeDelta -= fadeAmplitude * Time.deltaTime;
+            if (fadeDelta < 0)
+            {
+                shouldFadeVisuals = false;
+                fadeDelta = 0;
+            }
+
+            Color newColor = playerSprite.color;
+            newColor.a = Mathf.Lerp(lowestAlphaFade, 1, fadeDelta);
+            newColor.r = Mathf.Lerp(lowestColorDarkFade, 1, fadeDelta);
+            newColor.g = Mathf.Lerp(lowestColorDarkFade, 1, fadeDelta);
+            newColor.b = Mathf.Lerp(lowestColorDarkFade, 1, fadeDelta);
+            playerSprite.color = newColor;
+        }
+        else if (fadeDelta < 1)
+        {
+            fadeDelta += fadeAmplitude * Time.deltaTime;
+            if (fadeDelta > 1)
+            {
+                fadeDelta = 1;
+                shouldFadeVisuals = false;
+            }
+
+            Color newColor = playerSprite.color;
+            newColor.a = Mathf.Lerp(lowestAlphaFade, 1, fadeDelta);
+            newColor.r = Mathf.Lerp(lowestColorDarkFade, 1, fadeDelta);
+            newColor.g = Mathf.Lerp(lowestColorDarkFade, 1, fadeDelta);
+            newColor.b = Mathf.Lerp(lowestColorDarkFade, 1, fadeDelta);
+            playerSprite.color = newColor;
+        }
     }
 
     private void Attack(InputAction.CallbackContext ctx)
@@ -68,11 +115,13 @@ public class SpiritSystem : MonoBehaviour
             else
             {
                 spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritMiss);
+                shouldFadeVisuals = true;
             }
         }
         else
         {
             spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritMiss);
+            shouldFadeVisuals = true;
         }
     }
 
