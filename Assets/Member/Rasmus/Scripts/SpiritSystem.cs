@@ -1,5 +1,5 @@
 using R3;
-using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -28,12 +28,12 @@ public class SpiritSystem : MonoBehaviour
         startZ = transform.position.z;
     }
 
-public int numToEmit = 25;
     private void Attack(InputAction.CallbackContext ctx)
     {
 
         spiritLayerMask = LayerMask.GetMask("Spirit");
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, 3, transform.forward, 10, spiritLayerMask);
+        // RaycastHit[] hits = Physics.SphereCastAll(transform.position, 3, transform.forward, 10, spiritLayerMask);
+        RaycastHit[] hits = Physics.BoxCastAll(transform.position, new Vector3(1, 3, 5), transform.forward, Quaternion.identity, 5, spiritLayerMask);
         if (hits.Length > 0)
         {
             RaycastHit nearestHit = hits[0];
@@ -51,16 +51,19 @@ public int numToEmit = 25;
                 particles.Emit(35);
                 // Notify to Stage
                 spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritExcellent);
+                nearestHit.transform.gameObject.layer = 0;
             }
             else if (distance < minMediumRange)
             {
                 particles.Emit(10);
                 spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritGreat);
+                nearestHit.transform.gameObject.layer = 0;
             }
             else if (distance < minEasyRange)
             {
                 particles.Emit(3);
                 spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritNice);
+                nearestHit.transform.gameObject.layer = 0;
             }
             else
             {
