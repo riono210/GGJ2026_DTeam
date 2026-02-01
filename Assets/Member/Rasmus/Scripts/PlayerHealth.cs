@@ -7,7 +7,7 @@ public class PlayerHealth : MonoBehaviour
     private AudioSource audioSource;
     private AudioClip saltAudioClip;
 
-    private Subject<MoveObjectHitEventType> hitSubject;
+    private Subject<MoveObjectHitEventType> hitSubject =  new Subject<MoveObjectHitEventType>();
     public Observable<MoveObjectHitEventType> HitObservable => hitSubject;
     
     // プレイヤーは魂HIT

@@ -16,7 +16,7 @@ public class SpiritSystem : MonoBehaviour
 
     private float startZ;
 
-    private Subject<MoveObjectHitEventType> spiritHitSubject;
+    private Subject<MoveObjectHitEventType> spiritHitSubject = new Subject<MoveObjectHitEventType>();
     public Observable<MoveObjectHitEventType> SpiritHitObservable => spiritHitSubject;
     
     void Awake()

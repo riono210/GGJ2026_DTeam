@@ -5,16 +5,18 @@ public class IMoveObject : MonoBehaviour
 {
     protected float currentSpeed;
     private CompositeDisposable disposables = new CompositeDisposable();
+    private bool isActiveMove = false;
 
     public CompositeDisposable Disposables => disposables;
 
-    private void Start()
-    {
-        disposables =  new CompositeDisposable();
-    }
-
     private void Update()
     {
+        //Debug.Log($"====== isActiveMove = {isActiveMove} ======");
+        if (!isActiveMove)
+        {
+            return;
+        }
+
         MoveObject();
     }
 
@@ -25,7 +27,20 @@ public class IMoveObject : MonoBehaviour
     
     public void SetSpeed(float speed)
     {
+        Debug.Log($"====== speed = {speed} ======");
         currentSpeed = speed;
+    }
+
+    public void StartMove(float initialSpeed)
+    {
+        Debug.Log($"====== StartMove = {initialSpeed} ======");
+        currentSpeed = initialSpeed;
+        isActiveMove = true;
+    }
+
+    public void StopMove()
+    {
+        isActiveMove = false;
     }
 
     protected virtual void MoveObject()

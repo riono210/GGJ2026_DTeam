@@ -67,7 +67,7 @@ public class StageMover : MonoBehaviour
         // playerのcomponent取得
         playerMovement = playerObject.GetComponent<PlayerMovement>();
         playerHealth = playerObject.GetComponent<PlayerHealth>();
-        spiritSystem = spiritSystem.GetComponent<SpiritSystem>();
+        spiritSystem = playerObject.GetComponent<SpiritSystem>();
         
         // 生成したアイテムたちのキャッシュ
         moveObjects = new List<IMoveObject>();
@@ -81,7 +81,7 @@ public class StageMover : MonoBehaviour
         hitEventDisposable = new CompositeDisposable();
 
         // Goalを動かす
-        goalObject.StartMove();
+        goalObject?.StartMove(currentStageSpeed.CurrentValue);
         
         // Subscribes
         playerHealth?.HitObservable.Subscribe(OnObstacleHit).AddTo(hitEventDisposable);
@@ -158,6 +158,7 @@ public class StageMover : MonoBehaviour
             return;
         }
 
+        moveObject.StartMove(currentStageSpeed.CurrentValue);
         moveObjects.Add(moveObject);
         // Speed設定: 対象のライフサイクルに紐づける
         currentStageSpeed.Subscribe(moveObject.SetSpeed).AddTo(moveObject.Disposables);
