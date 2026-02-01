@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using R3;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,12 +9,14 @@ public class PlayerHealth : MonoBehaviour
 {
 
     [SerializeField] private GameObject heartPrefab;
-    [SerializeField] private Transform heartParent;
-    [SerializeField] private int heartCount;
+    [SerializeField] private List<GameObject> hearts = new List<GameObject>();
+    [SerializeField] private GameOverShow gameOverShow;
+    [SerializeField] private SpriteRenderer playerRenderer;
+    [SerializeField] private Animator playerAnimator;
     
     private AudioSource audioSource;
     private AudioClip saltAudioClip;
-    private List<GameObject> hearts = new List<GameObject>();
+    private int heartCount;
     public int CurrentHeartCount => heartCount;
 
     private Subject<MoveObjectHitEventType> hitSubject =  new Subject<MoveObjectHitEventType>();
@@ -41,26 +44,13 @@ public class PlayerHealth : MonoBehaviour
 
     }
 
-    private void GenerateHeart()
-    {
-        for (int count = 0; count < heartCount; count++)
-        {
-            // Instantiate heart prefab
-            var heartObject = Instantiate(heartPrefab, heartParent);
-            hearts.Add(heartObject);
-        }
-    }
-
     private void Awake()
     {
     }
 
     private void Start()
     {
-        if (heartPrefab != null && heartParent != null)
-        {
-            GenerateHeart();
-        }
+        heartCount = hearts.Count;
     }
 
     void OnTriggerEnter(Collider other)
@@ -76,16 +66,34 @@ public class PlayerHealth : MonoBehaviour
                 {
                     case ObstacleType.None:
                         hitSubject.OnNext(MoveObjectHitEventType.None);
-                    break;
+                        break;
                     case ObstacleType.TypeA:
                         hitSubject.OnNext(MoveObjectHitEventType.ObstacleA);
-                    break;
+                        break;
                     case ObstacleType.TypeB:
                         hitSubject.OnNext(MoveObjectHitEventType.ObstacleB);
-                    break;
+                        break;
                     case ObstacleType.TypeC:
                         hitSubject.OnNext(MoveObjectHitEventType.ObstacleC);
-                    break;
+                        break;
+                }
+
+                if (heartCount > 0 && hearts.Count > 0)
+                {
+                    var lastHeartIndex = heartCount - 1;
+                    hearts[lastHeartIndex].gameObject.SetActive(false);
+                    heartCount -= 1;
+                }
+
+                if (heartCount <= 0)
+                {
+                    Debug.Log("Game Over!");
+                    gameOverShow.ShowGameOver();
+                    
+                    // player fade out
+                    playerRenderer.DOFade(0f, 1f);
+                    playerAnimator.enabled = false;
+                    hitSubject.OnNext(MoveObjectHitEventType.GameOver);
                 }
             }
         }

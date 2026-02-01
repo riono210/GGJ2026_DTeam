@@ -538,13 +538,18 @@ public class StageMover : MonoBehaviour
     private async UniTask OnObstacleHit(MoveObjectHitEventType eventType)
     {
         Debug.Log($"Obstacle Hit.... {eventType}");
-        var minusSpeed = eventType switch
+        // var minusSpeed = eventType switch
+        // {
+        //     MoveObjectHitEventType.ObstacleA => -1,
+        //     MoveObjectHitEventType.ObstacleB => -5,
+        //     MoveObjectHitEventType.ObstacleC => -10,
+        //     _ => 0,
+        // };
+
+        if (eventType == MoveObjectHitEventType.GameOver)
         {
-            MoveObjectHitEventType.ObstacleA => -1,
-            MoveObjectHitEventType.ObstacleB => -5,
-            MoveObjectHitEventType.ObstacleC => -10,
-            _ => 0,
-        };
+            ChangeSpeed(0f);
+        }
 
         var prevSpeed = currentStageSpeed.CurrentValue;
         // 当たった衝撃でスローに
