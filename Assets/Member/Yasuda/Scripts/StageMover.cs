@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using R3;
 using UnityEngine;
@@ -76,6 +77,7 @@ public class StageMover : MonoBehaviour
     private bool goalSpawnPending;
     private float lastSpawnTravelDistance;
     private float nextSideTreeSpawnAt;
+    private bool isSlowImmunity = false;
     private CompositeDisposable hitEventDisposable;
 
     public void Start()
@@ -552,15 +554,18 @@ public class StageMover : MonoBehaviour
         {
             ChangeSpeed(0f);
         }
+        
+        if (!isSlowImmunity)
+        {
+            var prevSpeed = currentStageSpeed.CurrentValue;
+            // 当たった衝撃でスローに
+            ChangeSpeed(hitObstacleSpeed);
 
-        var prevSpeed = currentStageSpeed.CurrentValue;
-        // 当たった衝撃でスローに
-        ChangeSpeed(hitObstacleSpeed);
+            await UniTask.Delay(TimeSpan.FromSeconds(setHitSpeedTime));
 
-        await UniTask.Delay(TimeSpan.FromSeconds(setHitSpeedTime));
-
-        // 元の0.8倍で再開
-        ChangeSpeed(prevSpeed * uponSpeedMultiplier);
+            // 元の0.8倍で再開
+            ChangeSpeed(prevSpeed * uponSpeedMultiplier);
+        }
     }
     
     private void OnSpiritHit(MoveObjectHitEventType eventType)
@@ -581,5 +586,12 @@ public class StageMover : MonoBehaviour
     private void OnItemHit(MoveObjectHitEventType eventType)
     {
         // アイテムの処理        
+    }
+    
+    public async UniTask SetSlowImmunity(float duration, CancellationToken cancellationToken)
+    {
+        isSlowImmunity = true;
+        await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: cancellationToken);
+        isSlowImmunity = false;
     }
 }

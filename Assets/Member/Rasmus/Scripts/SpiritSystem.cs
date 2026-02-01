@@ -1,3 +1,6 @@
+using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using R3;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -34,6 +37,7 @@ public class SpiritSystem : MonoBehaviour
     Material[] shadowMaterials = new Material[2];
 
     private StageMover stageMover;
+    private bool isForceExcellent = false;
 
 public float minspeed = 100;
     public void InitShadows(Vector3 leftPos, Vector3 rightPos)
@@ -133,7 +137,7 @@ public float minspeed = 100;
             float hitZ = nearestHit.transform.position.z;
             float distance = Mathf.Abs(hitZ - startZ);
 
-            if (distance < minHardRange)
+            if (isForceExcellent || distance < minHardRange)
             {
                 particles.Emit(35);
                 // Notify to Stage
@@ -174,5 +178,12 @@ public float minspeed = 100;
                 nextAllowedMissSound = Time.time + 0.1f;
             }
         }
+    }
+    
+    public async UniTask ForceExcellent(float duration, CancellationToken cancellationToken)
+    {
+        isForceExcellent = true;
+        await UniTask.Delay(TimeSpan.FromSeconds(duration), cancellationToken: cancellationToken);
+        isForceExcellent = false;
     }
 }
