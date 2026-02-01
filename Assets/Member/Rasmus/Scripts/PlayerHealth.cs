@@ -13,44 +13,21 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private GameOverShow gameOverShow;
     [SerializeField] private SpriteRenderer playerRenderer;
     [SerializeField] private Animator playerAnimator;
+    [SerializeField] private AudioSource smackSoundSource;
     
-    private AudioSource audioSource;
-    private AudioClip saltAudioClip;
+    [SerializeField] private AudioClip saltAudioClip;
+    private AudioSource playerAudioSource;
     private int heartCount;
     public int CurrentHeartCount => heartCount;
 
     private Subject<MoveObjectHitEventType> hitSubject =  new Subject<MoveObjectHitEventType>();
     public Observable<MoveObjectHitEventType> HitObservable => hitSubject;
-    
-    // プレイヤーは魂HIT
-    public void SoulHit()
-    {
-        Debug.Log("Hit!");
-    }
-
-    public void Hurt(ObstacleType obstacleType)
-    {
-        switch (obstacleType)
-        {
-            case ObstacleType.None:
-            break;
-            case ObstacleType.TypeA:
-            break;
-            case ObstacleType.TypeB:
-            break;
-            case ObstacleType.TypeC:
-            break;
-        }
-
-    }
-
-    private void Awake()
-    {
-    }
 
     private void Start()
     {
         heartCount = hearts.Count;
+        playerAudioSource = GetComponent<AudioSource>();
+
     }
 
     void OnTriggerEnter(Collider other)
@@ -61,20 +38,24 @@ public class PlayerHealth : MonoBehaviour
             // obstacle.
             if (obstacle)
             {
-                Debug.Log("IMPLEMENT COLLISION PLAYER OBSTACLE!");
                 switch (obstacle.ObstacleType)
                 {
                     case ObstacleType.None:
                         hitSubject.OnNext(MoveObjectHitEventType.None);
+                        smackSoundSource.Play();
                         break;
                     case ObstacleType.TypeA:
                         hitSubject.OnNext(MoveObjectHitEventType.ObstacleA);
+                        smackSoundSource.Play();
                         break;
                     case ObstacleType.TypeB:
                         hitSubject.OnNext(MoveObjectHitEventType.ObstacleB);
+                        smackSoundSource.Play();
                         break;
                     case ObstacleType.TypeC:
+                        playerAudioSource.PlayOneShot(saltAudioClip);
                         hitSubject.OnNext(MoveObjectHitEventType.ObstacleC);
+                        // Salt
                         break;
                 }
 
