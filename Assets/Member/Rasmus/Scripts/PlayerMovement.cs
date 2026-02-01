@@ -1,6 +1,4 @@
 // For switching lanes
-using System;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,8 +9,6 @@ public enum Lane
 }
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] GameObject shadowPrefab;
-
     // Movement
     public float laneSwitchSpeed = 10f;
     public float bonusSpeedAmplitude = 2;
@@ -53,13 +49,15 @@ public class PlayerMovement : MonoBehaviour
         Vector3 lengthVector = leftPos - rightPos;
         distanceBetweenLanes = lengthVector.magnitude;
 
-        Vector3 l = leftPos;
-        const float yPos = 0.1f;
-        l.y = yPos;
-        Instantiate(shadowPrefab, l, Quaternion.Euler(new Vector3(90, 0, 0)));
-        Vector3 r = rightPos;
-        r.y = yPos;
-        Instantiate(shadowPrefab, r, Quaternion.Euler(new Vector3(90, 0, 0)));
+        SpiritSystem spirit = GetComponent<SpiritSystem>();
+        if (spirit)
+        {
+            spirit.InitShadows(leftPos, rightPos);
+        }
+        else
+        {
+            Debug.LogError("PlayerMovenet could not get component SpiritSystem!");
+        }
     }
 
     private void Start()
