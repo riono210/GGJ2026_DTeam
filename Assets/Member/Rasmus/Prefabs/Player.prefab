@@ -5232,12 +5232,12 @@ GameObject:
   - component: {fileID: 1065039477354636933}
   - component: {fileID: -5578076804501917237}
   - component: {fileID: 1393724513470187769}
-  - component: {fileID: 684165871756907486}
   - component: {fileID: 7382732501551284975}
   - component: {fileID: 4510663716176061998}
   - component: {fileID: 3297938672683193}
   - component: {fileID: -6106585185109848014}
   - component: {fileID: 4753742503447808237}
+  - component: {fileID: 611154492226105391}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -5358,39 +5358,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   heartPrefab: {fileID: 8788089433567097611, guid: 0c9fb702b9f484635bb3a39ce9bbc077, type: 3}
-  hearts: []
   gameOverShow: {fileID: 0}
-  playerRenderer: {fileID: 0}
-  playerAnimator: {fileID: 0}
+  playerRenderer: {fileID: 7382732501551284975}
+  playerAnimator: {fileID: 4510663716176061998}
   smackSoundSource: {fileID: 3362141780118506988}
+  KOSound: {fileID: 8300000, guid: c7d7843e03ac907478544a2c73dd4000, type: 3}
   saltAudioClip: {fileID: 8300000, guid: 665cbf70e932b5a42a681090c2bde219, type: 3}
---- !u!54 &684165871756907486
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7990856358548315494}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 0
-  m_ImplicitTensor: 0
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 1
+  startHeartCount: 3
+  currentHeartCount: 3
 --- !u!212 &7382732501551284975
 SpriteRenderer:
   serializedVersion: 2
@@ -5484,6 +5459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60d104864e08e40bbba1ae41516c2af5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerGoal
+  fadeImage: {fileID: 0}
 --- !u!82 &-6106585185109848014
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5594,9 +5570,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   heartPrefab: {fileID: 0}
-  hearts: []
   gameOverShow: {fileID: 0}
   playerRenderer: {fileID: 0}
   playerAnimator: {fileID: 0}
-  smackSoundSource: {fileID: 0}
-  saltAudioClip: {fileID: 0}
+  smackSoundSource: {fileID: 3362141780118506988}
+  KOSound: {fileID: 8300000, guid: c7d7843e03ac907478544a2c73dd4000, type: 3}
+  saltAudioClip: {fileID: 8300000, guid: 665cbf70e932b5a42a681090c2bde219, type: 3}
+  startHeartCount: 3
+  currentHeartCount: 3
+--- !u!54 &611154492226105391
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7990856358548315494}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 1

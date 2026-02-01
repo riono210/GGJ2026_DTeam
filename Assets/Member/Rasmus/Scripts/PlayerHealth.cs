@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DG.Tweening;
 using R3;
 using UnityEngine;
@@ -9,25 +8,25 @@ public class PlayerHealth : MonoBehaviour
 {
 
     [SerializeField] private GameObject heartPrefab;
-    [SerializeField] private List<GameObject> hearts = new List<GameObject>();
     [SerializeField] private GameOverShow gameOverShow;
     [SerializeField] private SpriteRenderer playerRenderer;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private AudioSource smackSoundSource;
+    [SerializeField] private  AudioClip KOSound;
     
     [SerializeField] private AudioClip saltAudioClip;
     private AudioSource playerAudioSource;
-    private int heartCount;
-    public int CurrentHeartCount => heartCount;
+    [SerializeField] private int startHeartCount;
+    public int currentHeartCount;
 
     private Subject<MoveObjectHitEventType> hitSubject =  new Subject<MoveObjectHitEventType>();
     public Observable<MoveObjectHitEventType> HitObservable => hitSubject;
 
-    private void Start()
+    private void Awake()
     {
-        heartCount = hearts.Count;
-        playerAudioSource = GetComponent<AudioSource>();
 
+        currentHeartCount = startHeartCount;
+        playerAudioSource = GetComponent<AudioSource>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -59,16 +58,16 @@ public class PlayerHealth : MonoBehaviour
                         break;
                 }
 
-                if (heartCount > 0 && hearts.Count > 0)
+                if (startHeartCount > 0)
                 {
-                    var lastHeartIndex = heartCount - 1;
-                    hearts[lastHeartIndex].gameObject.SetActive(false);
-                    heartCount -= 1;
+                    currentHeartCount--;
                 }
 
-                if (heartCount <= 0)
+                if (currentHeartCount <= 0)
                 {
                     Debug.Log("Game Over!");
+                    BGM.instance.audioSource.Stop();
+                    playerAudioSource.PlayOneShot(KOSound);
                     gameOverShow.ShowGameOver();
                     
                     // player fade out
