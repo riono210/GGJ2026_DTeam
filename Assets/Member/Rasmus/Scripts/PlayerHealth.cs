@@ -72,8 +72,11 @@ public class PlayerHealth : MonoBehaviour
                     gameOverShow.ShowGameOver();
                     
                     // player fade out
-                    playerRenderer.DOFade(0f, 1f);
                     playerAnimator.enabled = false;
+                    playerRenderer.DOFade(0f, 1f).OnComplete(() =>
+                    {
+                        playerRenderer.gameObject.SetActive(false);
+                    });
                     hitSubject.OnNext(MoveObjectHitEventType.GameOver);
                 }
             }

@@ -55,7 +55,7 @@ public float minspeed = 100;
     {
         playerActions = new PlayerActions();
             playerActions.Enable();
-            playerActions.gameplay.attack.performed += ctx => Attack(ctx);
+            playerActions.gameplay.attack.performed += Attack;
 
         startZ = transform.position.z;
 
@@ -63,6 +63,11 @@ public float minspeed = 100;
         playerAudioSource = GetComponent<AudioSource>();
 
         stageMover = FindFirstObjectByType<StageMover>();
+    }
+
+    void OnDestroy()
+    {
+        playerActions.gameplay.attack.performed -= Attack;
     }
 
     void Update()
