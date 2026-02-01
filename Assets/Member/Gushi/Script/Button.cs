@@ -5,6 +5,7 @@ public class Button : MonoBehaviour
 {
     public enum ButtonType
     {
+        TitleGame,
         StartGame,
         MainGame,
         ReturnGame,
@@ -36,6 +37,9 @@ public class Button : MonoBehaviour
                 break;
             case ButtonType.SettingClose:
                 //this.CloseSetting();
+                break;
+            case ButtonType.TitleGame:
+                SceneManager.LoadScene("TitleScene");
                 break;
         }
     }

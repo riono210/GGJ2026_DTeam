@@ -1,4 +1,5 @@
 using R3;
+using Unity.Mathematics;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,11 +23,28 @@ public class SpiritSystem : MonoBehaviour
     [SerializeField] private float lowestAlphaFade = 0.5f;
     [SerializeField] private float  lowestColorDarkFade = 0.75f;
 
+    [SerializeField] GameObject shadowPrefab;
 
     private Subject<MoveObjectHitEventType> spiritHitSubject = new Subject<MoveObjectHitEventType>();
     public Observable<MoveObjectHitEventType> SpiritHitObservable => spiritHitSubject;
 
     SpriteRenderer playerSprite;
+    Material[] shadowMaterials = new Material[2];
+
+    public void InitShadows(Vector3 leftPos, Vector3 rightPos)
+    {
+        const float yPos = 0.1f;
+        leftPos.y = yPos;
+        rightPos.y = yPos;
+        if (shadowPrefab == null)
+        {
+            Debug.LogError("SpiritSystem shadow prefab reference is Null!");
+        }
+        shadowMaterials[0] = Instantiate(shadowPrefab, leftPos, Quaternion.Euler(new Vector3(90, 0, 0)))
+            .GetComponent<MeshRenderer>().material;
+        shadowMaterials[1] = Instantiate(shadowPrefab, rightPos, Quaternion.Euler(new Vector3(90, 0, 0)))
+            .GetComponent<MeshRenderer>().material;
+    }
     
     void Awake()
     {
@@ -56,6 +74,10 @@ public class SpiritSystem : MonoBehaviour
             newColor.g = Mathf.Lerp(lowestColorDarkFade, 1, fadeDelta);
             newColor.b = Mathf.Lerp(lowestColorDarkFade, 1, fadeDelta);
             playerSprite.color = newColor;
+            Color shadowColor = shadowMaterials[0].color;
+            shadowColor.a = newColor.a;
+            shadowMaterials[0].color = shadowColor;
+            shadowMaterials[1].color = shadowColor;
         }
         else if (fadeDelta < 1)
         {
@@ -72,6 +94,10 @@ public class SpiritSystem : MonoBehaviour
             newColor.g = Mathf.Lerp(lowestColorDarkFade, 1, fadeDelta);
             newColor.b = Mathf.Lerp(lowestColorDarkFade, 1, fadeDelta);
             playerSprite.color = newColor;
+            Color shadowColor = shadowMaterials[0].color;
+            shadowColor.a = newColor.a;
+            shadowMaterials[0].color = shadowColor;
+            shadowMaterials[1].color = shadowColor;
         }
     }
 

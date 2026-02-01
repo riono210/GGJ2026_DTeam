@@ -17,6 +17,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Member/Gushi/Scene/EndScene.unity
     guid: 1240a2b83adb58d4a82deeb7fb115957
+  - enabled: 1
+    path: Assets/Member/Gushi/Scene/ClearScene.unity
+    guid: 8c6f5896eaa549a4e8ef31a06b20ce9d
+  - enabled: 1
+    path: Assets/Member/Gushi/Scene/ResultScene.unity
+    guid: e2089e8ba7bce8840a0bd884231e522c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
