@@ -33,7 +33,7 @@ public class StageMover : MonoBehaviour
     [Header("Stage Settings")]
     [SerializeField] private float traveledDistance; 
     [SerializeField] private float defaultSpeed = 10f;
-    [SerializeField] private float minSpeed = 1f;
+    [SerializeField] private float minSpeed = 6f;
     [SerializeField] private float maxSpeed = 999f;
     [SerializeField] private float appearGoalDistance = 100f;
     [SerializeField] private float goalSpawnSpacing = 10f;
@@ -172,8 +172,7 @@ public class StageMover : MonoBehaviour
 
     private void AddSpeed(float speed)
     {
-        currentStageSpeed.Value += speed;
-        Mathf.Clamp(currentStageSpeed.Value, minSpeed, maxSpeed);
+        currentStageSpeed.Value = Mathf.Clamp(currentStageSpeed.Value += speed, minSpeed, maxSpeed);
     }
 
     private void ChangeSpeed(float speed)
