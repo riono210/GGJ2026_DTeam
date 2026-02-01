@@ -62,6 +62,14 @@ public int numToEmit = 25;
                 particles.Emit(3);
                 spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritNice);
             }
+            else
+            {
+                spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritMiss);
+            }
+        }
+        else
+        {
+            spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritMiss);
         }
     }
 
