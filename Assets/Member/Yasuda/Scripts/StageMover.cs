@@ -61,6 +61,7 @@ public class StageMover : MonoBehaviour
     private PlayerMovement playerMovement;
     private PlayerHealth playerHealth;
     private SpiritSystem spiritSystem;
+    private PlayerGoal playerGoal;
     
     
     private bool isInitialized;
@@ -96,6 +97,7 @@ public class StageMover : MonoBehaviour
         playerMovement = playerObject.GetComponent<PlayerMovement>();
         playerHealth = playerObject.GetComponent<PlayerHealth>();
         spiritSystem = playerObject.GetComponent<SpiritSystem>();
+        playerGoal = playerObject.GetComponent<PlayerGoal>();
         
         // 生成したアイテムたちのキャッシュ
         moveObjects = new List<IMoveObject>();
@@ -120,7 +122,7 @@ public class StageMover : MonoBehaviour
             await OnObstacleHit(eventType);
         }).AddTo(hitEventDisposable);
         spiritSystem?.SpiritHitObservable.Subscribe(OnSpiritHit).AddTo(hitEventDisposable);
-        
+        playerGoal?.GoalObservable.Subscribe(_ => ChangeSpeed(0f)).AddTo(hitEventDisposable);
         
         isInitialized =  true;
     }

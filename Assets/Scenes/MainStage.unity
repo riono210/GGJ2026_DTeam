@@ -536,6 +536,10 @@ PrefabInstance:
       propertyPath: impactSoundSourceRandomizer
       value: 
       objectReference: {fileID: 1311388605}
+    - target: {fileID: 3297938672683193, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
+      propertyPath: fadeImage
+      value: 
+      objectReference: {fileID: 958386914}
     - target: {fileID: 1393724513470187769, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
       propertyPath: heartParent
       value: 
