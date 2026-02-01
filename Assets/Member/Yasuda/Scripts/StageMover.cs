@@ -13,6 +13,7 @@ public class StageMover : MonoBehaviour
     [SerializeField] private List<GameObject> maskItemObjectList;
     [SerializeField] private List<GameObject> spiritItemObjectList;
     [SerializeField] private List<GameObject> obstacleObjectList;
+    [SerializeField] private GameObject goalObject;
     // それぞれの重み
     [SerializeField] private List<float> maskItemWeights;
     [SerializeField] private List<float> spiritItemWeights;
@@ -29,11 +30,11 @@ public class StageMover : MonoBehaviour
     [SerializeField] private float minSpacing = 6f;
     [SerializeField] private float maxSpacing = 12f;
 
-    [Header("Stage Objects")]
-    [SerializeField] private IMoveObject goalObject;
-
-    [Header("Speed")]
+    [Header("Stage Settings")]
     [SerializeField] private float defaultSpeed = 10f;
+    [SerializeField] private float minSpeed = 1f;
+    [SerializeField] private float appearGoalDistance = 100f;
+    [SerializeField] private float goalSpawnSpacing = 10f;
     
     [Header("Obstacle Speed Settings")]
     [SerializeField] private float hitObstacleSpeed = 2f;
@@ -59,6 +60,10 @@ public class StageMover : MonoBehaviour
     private float nextSpawnAt;
     private int lastLaneIndex = -1;
     private int sameLaneCount;
+    private bool isAppearGoal;
+    private bool goalSpawned;
+    private bool goalSpawnPending;
+    private float lastSpawnTravelDistance;
     private CompositeDisposable hitEventDisposable;
 
     public void Start()
@@ -91,9 +96,9 @@ public class StageMover : MonoBehaviour
         lastLaneIndex = -1;
         nextSpawnAt = GetNextSpacing();
         hitEventDisposable = new CompositeDisposable();
-
-        // Goalを動かす
-        goalObject?.StartMove(currentStageSpeed.CurrentValue);
+        goalSpawned = false;
+        goalSpawnPending = false;
+        lastSpawnTravelDistance = -1f;
         
         // Subscribes
         playerHealth?.HitObservable.SubscribeAwait(async (eventType, _ ) =>
@@ -125,6 +130,37 @@ public class StageMover : MonoBehaviour
         
         // 進行距離が閾値を超えたら複数回スポーン
         traveledDistance += currentStageSpeed.CurrentValue * Time.deltaTime;
+        
+        isAppearGoal = traveledDistance >= appearGoalDistance;
+        if (isAppearGoal && !goalSpawned && !goalSpawnPending)
+        {
+            // ゴール生成条件を満たした
+            goalSpawnPending = true;
+            if (lastSpawnTravelDistance < 0f)
+            {
+                lastSpawnTravelDistance = traveledDistance;
+            }
+        }
+        
+        // ゴールが生成されたので何もしない
+        if (goalSpawned)
+        {
+            return;
+        }
+        
+        // ゴールの生成待ち
+        if (goalSpawnPending)
+        {
+            var spacing = Mathf.Max(0f, goalSpawnSpacing);
+            if (traveledDistance - lastSpawnTravelDistance >= spacing)
+            {
+                // ゴールを生成できるSpaceができた
+                SpawnGoalObject();
+                goalSpawned = true;
+            }
+            return;
+        }
+
         while (traveledDistance >= nextSpawnAt)
         {
             SpawnOnce();
@@ -134,6 +170,13 @@ public class StageMover : MonoBehaviour
 
     private void AddSpeed(float speed)
     {
+        // 最低速度の設定
+        if (currentStageSpeed.CurrentValue + speed <= minSpeed)
+        {
+            currentStageSpeed.Value = minSpeed;
+            return;
+        }
+        
         currentStageSpeed.Value += speed;
     }
 
@@ -183,6 +226,42 @@ public class StageMover : MonoBehaviour
         // Speed設定: 対象のライフサイクルに紐づける
         currentStageSpeed.Subscribe(moveObject.SetSpeed).AddTo(moveObject.Disposables);
         instance.name = prefab.name;
+        lastSpawnTravelDistance = traveledDistance;
+    }
+
+    private void SpawnGoalObject()
+    {
+        if (goalObject == null)
+        {
+            return;
+        }
+
+        var spawnPos = spawnPoint != null ? spawnPoint.position : Vector3.zero;
+        if (lanePoints != null && lanePoints.Count > 0)
+        {
+            var minX = lanePoints[0].position.x;
+            var maxX = minX;
+            for (var i = 1; i < lanePoints.Count; i++)
+            {
+                var x = lanePoints[i].position.x;
+                if (x < minX) minX = x;
+                if (x > maxX) maxX = x;
+            }
+
+            spawnPos.x = (minX + maxX) * 0.5f;
+        }
+
+        var instance = Instantiate(goalObject, spawnPos, Quaternion.identity, spawnParent);
+        var moveObject = instance.GetComponent<IMoveObject>();
+        if (moveObject != null)
+        {
+            moveObject.StartMove(currentStageSpeed.CurrentValue);
+            moveObjects.Add(moveObject);
+            currentStageSpeed.Subscribe(moveObject.SetSpeed).AddTo(moveObject.Disposables);
+        }
+
+        instance.name = goalObject.name;
+        lastSpawnTravelDistance = traveledDistance;
     }
 
     private GameObject PickSpawnPrefab()
