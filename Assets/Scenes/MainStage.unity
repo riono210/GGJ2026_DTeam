@@ -1222,10 +1222,6 @@ PrefabInstance:
       propertyPath: playerObject
       value: 
       objectReference: {fileID: 1082615466}
-    - target: {fileID: 9164876001741094103, guid: 0f1206e3e5a8c43d398a012aee429b4b, type: 3}
-      propertyPath: appearGoalDistance
-      value: 100
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
