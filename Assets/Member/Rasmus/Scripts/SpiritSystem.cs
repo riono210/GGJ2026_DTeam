@@ -2,6 +2,7 @@ using R3;
 using Unity.Mathematics;
 using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 
 public class SpiritSystem : MonoBehaviour
@@ -24,7 +25,9 @@ public class SpiritSystem : MonoBehaviour
     [SerializeField] private float  lowestColorDarkFade = 0.75f;
 
     [SerializeField] GameObject shadowPrefab;
-
+    [SerializeField] AudioSource impactSoundSourceRandomizer;
+    [SerializeField] AudioResource wooshSound;
+    AudioSource playerAudioSource;
     private Subject<MoveObjectHitEventType> spiritHitSubject = new Subject<MoveObjectHitEventType>();
     public Observable<MoveObjectHitEventType> SpiritHitObservable => spiritHitSubject;
 
@@ -55,6 +58,7 @@ public class SpiritSystem : MonoBehaviour
         startZ = transform.position.z;
 
         playerSprite = GetComponent<SpriteRenderer>();
+        playerAudioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -145,6 +149,8 @@ public class SpiritSystem : MonoBehaviour
             spiritHit.transform.gameObject.layer = 0;
             var glowEffect = spiritHit.GetComponent<GlowEffectController>();
             glowEffect.StartGlow();
+            playerAudioSource.PlayOneShot((AudioClip)wooshSound);
+            impactSoundSourceRandomizer.Play(0);
         }
         else
         {
