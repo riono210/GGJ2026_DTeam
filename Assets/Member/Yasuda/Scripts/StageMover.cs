@@ -30,6 +30,14 @@ public class StageMover : MonoBehaviour
     [SerializeField] private float minSpacing = 6f;
     [SerializeField] private float maxSpacing = 12f;
 
+    [Header("Side Tree Settings")]
+    [SerializeField] private List<GameObject> sideTreePrefabs;
+    [SerializeField] private float sideTreeSpacing = 10f;
+    [SerializeField] private float sideTreeOffsetX = 1.5f;
+    [SerializeField] private float sideTreeSpawnY = 0.5f;
+    [SerializeField] private Transform sideTreeStartPoint;
+    [SerializeField] private Transform sideTreeEndPoint;
+
     [Header("Stage Settings")]
     [SerializeField] private float traveledDistance; 
     [SerializeField] private float defaultSpeed = 10f;
@@ -66,6 +74,7 @@ public class StageMover : MonoBehaviour
     private bool goalSpawned;
     private bool goalSpawnPending;
     private float lastSpawnTravelDistance;
+    private float nextSideTreeSpawnAt;
     private CompositeDisposable hitEventDisposable;
 
     public void Start()
@@ -97,11 +106,14 @@ public class StageMover : MonoBehaviour
         sameLaneCount = 0;
         lastLaneIndex = -1;
         nextSpawnAt = GetNextSpacing();
+        nextSideTreeSpawnAt = traveledDistance + GetSideTreeSpacing();
         hitEventDisposable = new CompositeDisposable();
         goalSpawned = false;
         goalSpawnPending = false;
         lastSpawnTravelDistance = -1f;
-        
+
+        SpawnInitialSideTrees();
+
         // Subscribes
         playerHealth?.HitObservable.SubscribeAwait(async (eventType, _ ) =>
         {
@@ -163,6 +175,12 @@ public class StageMover : MonoBehaviour
             return;
         }
 
+        while (traveledDistance >= nextSideTreeSpawnAt)
+        {
+            SpawnSideTreePairAtZ(GetSideTreeEndZ());
+            nextSideTreeSpawnAt += GetSideTreeSpacing();
+        }
+
         while (traveledDistance >= nextSpawnAt)
         {
             SpawnOnce();
@@ -186,6 +204,11 @@ public class StageMover : MonoBehaviour
         var min = Mathf.Max(0.1f, minSpacing);
         var max = Mathf.Max(min, maxSpacing);
         return Random.Range(min, max);
+    }
+
+    private float GetSideTreeSpacing()
+    {
+        return Mathf.Max(0.1f, sideTreeSpacing);
     }
 
     private void SpawnOnce()
@@ -222,6 +245,116 @@ public class StageMover : MonoBehaviour
         currentStageSpeed.Subscribe(moveObject.SetSpeed).AddTo(moveObject.Disposables);
         instance.name = prefab.name;
         lastSpawnTravelDistance = traveledDistance;
+    }
+
+    private void SpawnSideTreePairAtZ(float z)
+    {
+        if (sideTreePrefabs == null || sideTreePrefabs.Count == 0)
+        {
+            return;
+        }
+
+        var basePos = spawnPoint != null ? spawnPoint.position : Vector3.zero;
+        basePos.y = sideTreeSpawnY;
+        basePos.z = z;
+
+        float minX;
+        float maxX;
+        if (lanePoints != null && lanePoints.Count > 0)
+        {
+            minX = lanePoints[0].position.x;
+            maxX = minX;
+            for (var i = 1; i < lanePoints.Count; i++)
+            {
+                var x = lanePoints[i].position.x;
+                if (x < minX) minX = x;
+                if (x > maxX) maxX = x;
+            }
+        }
+        else
+        {
+            minX = basePos.x;
+            maxX = basePos.x;
+        }
+
+        var leftPos = basePos;
+        leftPos.x = minX - sideTreeOffsetX;
+        SpawnSideTree(leftPos);
+
+        var rightPos = basePos;
+        rightPos.x = maxX + sideTreeOffsetX;
+        SpawnSideTree(rightPos);
+    }
+
+    /// <summary>
+    /// 通常生成
+    /// Stageの奥に生成
+    /// </summary>
+    /// <param name="spawnPos"></param>
+    private void SpawnSideTree(Vector3 spawnPos)
+    {
+        var prefab = sideTreePrefabs[Random.Range(0, sideTreePrefabs.Count)];
+        if (prefab == null)
+        {
+            return;
+        }
+
+        var parent = spawnParent != null ? spawnParent : transform;
+        var instance = Instantiate(prefab, spawnPos, Quaternion.identity, parent);
+        var moveObject = instance.GetComponent<IMoveObject>();
+        if (moveObject == null)
+        {
+            moveObject = instance.AddComponent<IMoveObject>();
+        }
+
+        moveObject.StartMove(currentStageSpeed.CurrentValue);
+        moveObjects.Add(moveObject);
+        currentStageSpeed.Subscribe(moveObject.SetSpeed).AddTo(moveObject.Disposables);
+        instance.name = prefab.name;
+    }
+
+    /// <summary>
+    /// 初期サイドツリーの生成
+    /// </summary>
+    private void SpawnInitialSideTrees()
+    {
+        if (sideTreePrefabs == null || sideTreePrefabs.Count == 0)
+        {
+            return;
+        }
+
+        var spacing = GetSideTreeSpacing();
+        var startZ = GetSideTreeStartZ();
+        var endZ = GetSideTreeEndZ();
+        if (endZ < startZ)
+        {
+            (startZ, endZ) = (endZ, startZ);
+        }
+
+        for (var z = startZ; z <= endZ; z += spacing)
+        {
+            SpawnSideTreePairAtZ(z);
+        }
+    }
+
+    private float GetSideTreeStartZ()
+    {
+        if (sideTreeStartPoint != null)
+        {
+            return sideTreeStartPoint.position.z;
+        }
+
+        return spawnPoint != null ? spawnPoint.position.z : 0f;
+    }
+
+    private float GetSideTreeEndZ()
+    {
+        if (sideTreeEndPoint != null)
+        {
+            return sideTreeEndPoint.position.z;
+        }
+
+        return spawnPoint != null ? spawnPoint.position.z : 0f;
     }
 
     private void SpawnGoalObject()
