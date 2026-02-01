@@ -81,6 +81,7 @@ public class SpiritSystem : MonoBehaviour
         spiritLayerMask = LayerMask.GetMask("Spirit");
         // RaycastHit[] hits = Physics.SphereCastAll(transform.position, 3, transform.forward, 10, spiritLayerMask);
         RaycastHit[] hits = Physics.BoxCastAll(transform.position, new Vector3(1, 3, 5), transform.forward, Quaternion.identity, 5, spiritLayerMask);
+        Transform spiritHit = null;
         if (hits.Length > 0)
         {
             RaycastHit nearestHit = hits[0];
@@ -98,25 +99,26 @@ public class SpiritSystem : MonoBehaviour
                 particles.Emit(35);
                 // Notify to Stage
                 spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritExcellent);
-                nearestHit.transform.gameObject.layer = 0;
+                spiritHit = nearestHit.transform;
             }
             else if (distance < minMediumRange)
             {
                 particles.Emit(10);
                 spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritGreat);
-                nearestHit.transform.gameObject.layer = 0;
+                spiritHit = nearestHit.transform;
             }
             else if (distance < minEasyRange)
             {
                 particles.Emit(3);
                 spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritNice);
-                nearestHit.transform.gameObject.layer = 0;
+                spiritHit = nearestHit.transform;
             }
-            else
-            {
-                spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritMiss);
-                shouldFadeVisuals = true;
-            }
+        }
+        if (spiritHit)
+        {
+            spiritHit.transform.gameObject.layer = 0;
+            var glowEffect = spiritHit.GetComponent<GlowEffectController>();
+            glowEffect.StartGlow();
         }
         else
         {
@@ -124,6 +126,4 @@ public class SpiritSystem : MonoBehaviour
             shouldFadeVisuals = true;
         }
     }
-
-
 }
