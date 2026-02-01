@@ -19,6 +19,9 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private int startHeartCount;
     public int currentHeartCount;
 
+    private int barrierCount = 0;
+    [SerializeField] private GameObject barrierIcon;
+
     private Subject<MoveObjectHitEventType> hitSubject =  new Subject<MoveObjectHitEventType>();
     public Observable<MoveObjectHitEventType> HitObservable => hitSubject;
 
@@ -33,6 +36,20 @@ public class PlayerHealth : MonoBehaviour
     {
         if (other.transform.tag == "Obstacle")
         {
+            if (barrierCount > 0)
+            {
+                barrierCount--;
+                if (barrierCount == 0)
+                {
+                    barrierIcon.SetActive(false);
+                }
+    
+                // 障害物を無効化または破壊
+                other.gameObject.SetActive(false);
+                Debug.Log("===== Barrier Count: " + barrierCount);
+                return;
+            }
+            
             var obstacle = other.transform.GetComponent<ObstacleObject>();
             // obstacle.
             if (obstacle)
@@ -80,5 +97,10 @@ public class PlayerHealth : MonoBehaviour
                 }
             }
         }
+    }
+    
+    public void AddBarrier()
+    {
+        barrierCount++;
     }
 }
