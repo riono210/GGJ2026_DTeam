@@ -29,7 +29,7 @@ public class StageMover : MonoBehaviour
     [SerializeField] private float maxSpacing = 12f;
 
     [Header("Stage Objects")]
-    [SerializeField] private List<IMoveObject> sceneMoveObjects;
+    [SerializeField] private IMoveObject goalObject;
 
     [Header("Speed")]
     [SerializeField] private float defaultSpeed = 10f;
@@ -80,10 +80,12 @@ public class StageMover : MonoBehaviour
         nextSpawnAt = GetNextSpacing();
         hitEventDisposable = new CompositeDisposable();
 
+        // Goalを動かす
+        goalObject.StartMove();
+        
         // Subscribes
         playerHealth?.HitObservable.Subscribe(OnObstacleHit).AddTo(hitEventDisposable);
         spiritSystem?.SpiritHitObservable.Subscribe(OnSpiritHit).AddTo(hitEventDisposable);
-        
         
         
         isInitialized =  true;
