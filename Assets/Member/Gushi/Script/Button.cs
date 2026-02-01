@@ -27,7 +27,7 @@ public class Button : MonoBehaviour
         {
             case ButtonType.StartGame:
             case ButtonType.ReturnGame:
-                SceneManager.LoadScene("MainScene");
+                SceneManager.LoadScene("MainStage");
                 break;
             case ButtonType.MainGame:
                 SceneManager.LoadScene("EndScene");

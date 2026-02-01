@@ -1013,8 +1013,8 @@ MonoBehaviour:
   laneWeights:
   - 1
   - 1
-  obstacleChance: 0.364
-  spiritChance: 0.578
+  obstacleChance: 0.55
+  spiritChance: 0.4
   maxSameLane: 2
   minSpacing: 12
   maxSpacing: 20
@@ -1029,15 +1029,15 @@ MonoBehaviour:
   defaultSpeed: 30
   minSpeed: 1
   maxSpeed: 999
-  appearGoalDistance: 1000
+  appearGoalDistance: 5000
   goalSpawnSpacing: 10
   hitObstacleSpeed: 2
-  setHitSpeedTime: 0.3
+  setHitSpeedTime: 0.06
   uponSpeedMultiplier: 0.8
-  missAddSpeed: -5
+  missAddSpeed: -10
   niceAddSpeed: 1
-  greatAddSpeed: 5
-  excellentAddSpeed: 10
+  greatAddSpeed: 10
+  excellentAddSpeed: 100
 --- !u!1 &7200000000000000000
 GameObject:
   m_ObjectHideFlags: 0
