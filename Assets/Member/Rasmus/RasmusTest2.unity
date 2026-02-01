@@ -462,9 +462,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -5578076804501917237, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
-      propertyPath: wooshSound
+      propertyPath: minspeed
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: -5578076804501917237, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
+      propertyPath: missSound
       value: 
       objectReference: {fileID: 8300000, guid: 6984c4a505d101b339717f1a24d7ef78, type: 3}
+    - target: {fileID: -5578076804501917237, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
+      propertyPath: wooshSound
+      value: 
+      objectReference: {fileID: 8300000, guid: a7bc19c378429df46ae22a123dbbfd67, type: 3}
     - target: {fileID: -5578076804501917237, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
       propertyPath: impactSound
       value: 
@@ -473,6 +481,10 @@ PrefabInstance:
       propertyPath: shadowPrefab
       value: 
       objectReference: {fileID: 4940488772788069854, guid: f00cbd5f0ff80a586aaed4e5d2644182, type: 3}
+    - target: {fileID: -5578076804501917237, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
+      propertyPath: wooshSoundSourceRandomizer
+      value: 
+      objectReference: {fileID: 1855194824}
     - target: {fileID: -5578076804501917237, guid: bb0b3d4911d9eca27a294ec07fb63fc1, type: 3}
       propertyPath: impactSoundSourceRandomizer
       value: 
@@ -2229,8 +2241,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1855194822}
   - component: {fileID: 1855194823}
+  - component: {fileID: 1855194824}
   m_Layer: 0
-  m_Name: ImpactAudioRandomizer
+  m_Name: AudioRandomizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2265,6 +2278,103 @@ AudioSource:
   m_Resource: {fileID: 6418180475301049370, guid: 04612df1d2e197df9bafae1f3306cfb8, type: 2}
   m_PlayOnAwake: 0
   m_Volume: 0.39
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &1855194824
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855194821}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 93bc72c3f0cbe2a51907517aa51b955d, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 6418180475301049370, guid: 798d0659ede86156197b6c12f9c3554e, type: 2}
+  m_PlayOnAwake: 0
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2435,6 +2545,12 @@ MonoBehaviour:
   maxSameLane: 2
   minSpacing: 6
   maxSpacing: 12
+  sideTreePrefabs: []
+  sideTreeSpacing: 10
+  sideTreeOffsetX: 1.5
+  sideTreeSpawnY: 0.5
+  sideTreeStartPoint: {fileID: 0}
+  sideTreeEndPoint: {fileID: 0}
   traveledDistance: 0
   defaultSpeed: 30
   minSpeed: 6
