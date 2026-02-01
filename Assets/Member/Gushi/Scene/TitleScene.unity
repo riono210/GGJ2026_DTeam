@@ -1251,6 +1251,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button
       objectReference: {fileID: 0}
+    - target: {fileID: 1962147278025720566, guid: 6492cee9adc4cbd4fb364ab8e86a8815, type: 3}
+      propertyPath: type
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6853963746822521198, guid: 6492cee9adc4cbd4fb364ab8e86a8815, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -865,7 +865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fbf0a0ce5d895d40bff3e78363d601a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VideoSceneReturner
-  targetSceneName: TitleScene
+  targetSceneName: ResultScene
   delayAfterVideo: 0
 --- !u!1 &1799675964
 GameObject:
