@@ -198,6 +198,11 @@ public class StageMover : MonoBehaviour
         currentStageSpeed.Value = speed;
     }
 
+    public float GetSpeed()
+    {
+        return currentStageSpeed.Value;
+    }
+
     private float GetNextSpacing()
     {
         // 間隔の最小値を担保してランダム化

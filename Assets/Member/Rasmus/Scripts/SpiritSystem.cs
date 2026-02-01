@@ -1,8 +1,5 @@
 using R3;
-using Unity.Mathematics;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 
 public class SpiritSystem : MonoBehaviour
@@ -26,7 +23,9 @@ public class SpiritSystem : MonoBehaviour
 
     [SerializeField] GameObject shadowPrefab;
     [SerializeField] AudioSource impactSoundSourceRandomizer;
-    [SerializeField] AudioResource wooshSound;
+    [SerializeField] AudioSource wooshSoundSourceRandomizer;
+    [SerializeField] AudioClip missSound;
+    private float nextAllowedMissSound = 0;
     AudioSource playerAudioSource;
     private Subject<MoveObjectHitEventType> spiritHitSubject = new Subject<MoveObjectHitEventType>();
     public Observable<MoveObjectHitEventType> SpiritHitObservable => spiritHitSubject;
@@ -34,6 +33,9 @@ public class SpiritSystem : MonoBehaviour
     SpriteRenderer playerSprite;
     Material[] shadowMaterials = new Material[2];
 
+    private StageMover stageMover;
+
+public float minspeed = 100;
     public void InitShadows(Vector3 leftPos, Vector3 rightPos)
     {
         const float yPos = 0.1f;
@@ -59,6 +61,8 @@ public class SpiritSystem : MonoBehaviour
 
         playerSprite = GetComponent<SpriteRenderer>();
         playerAudioSource = GetComponent<AudioSource>();
+
+        stageMover = FindFirstObjectByType<StageMover>();
     }
 
     void Update()
@@ -149,13 +153,21 @@ public class SpiritSystem : MonoBehaviour
             spiritHit.transform.gameObject.layer = 0;
             var glowEffect = spiritHit.GetComponent<GlowEffectController>();
             glowEffect.StartGlow();
-            playerAudioSource.PlayOneShot((AudioClip)wooshSound);
+            if (stageMover.GetSpeed() > minspeed)
+            {
+                wooshSoundSourceRandomizer.Play(0);
+            }
             impactSoundSourceRandomizer.Play(0);
         }
         else
         {
             spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritMiss);
             shouldFadeVisuals = true;
+            if (nextAllowedMissSound < Time.time)
+            {
+                playerAudioSource.PlayOneShot(missSound);
+                nextAllowedMissSound = Time.time + 0.1f;
+            }
         }
     }
 }
