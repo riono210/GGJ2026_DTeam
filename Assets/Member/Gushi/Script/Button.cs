@@ -32,7 +32,7 @@ public class Button : MonoBehaviour
                 SceneManager.LoadScene("EndScene");
                 break;
             case ButtonType.SettingOpen:
-                //this.OpenSetting();
+                this.OpenSetting();
                 break;
             case ButtonType.SettingClose:
                 //this.CloseSetting();
