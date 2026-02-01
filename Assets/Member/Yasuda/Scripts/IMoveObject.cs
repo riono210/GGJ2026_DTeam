@@ -11,7 +11,6 @@ public class IMoveObject : MonoBehaviour
 
     private void Update()
     {
-        //Debug.Log($"====== isActiveMove = {isActiveMove} ======");
         if (!isActiveMove)
         {
             return;
@@ -27,13 +26,11 @@ public class IMoveObject : MonoBehaviour
     
     public void SetSpeed(float speed)
     {
-        Debug.Log($"====== speed = {speed} ======");
         currentSpeed = speed;
     }
 
     public void StartMove(float initialSpeed)
     {
-        Debug.Log($"====== StartMove = {initialSpeed} ======");
         currentSpeed = initialSpeed;
         isActiveMove = true;
     }
