@@ -76,6 +76,7 @@ public class GlowEffectController : MonoBehaviour
         isAnimating = false;
     }
 
+/*
     // デバッグ用
     void Update()
     {
@@ -87,4 +88,5 @@ public class GlowEffectController : MonoBehaviour
             }
         }
     }
+*/
 }

@@ -2031,6 +2031,7 @@ MonoBehaviour:
   - {fileID: 3635669429325954729, guid: 8b7379d239004eb79cf7bb269642f44d, type: 3}
   - {fileID: 3635669429325954729, guid: 8b7379d239004eb79cf7bb269642f44d, type: 3}
   - {fileID: 4962670095506375003, guid: 8effe46c3585a42988afd213730d960c, type: 3}
+  goalObject: {fileID: 0}
   maskItemWeights:
   - 1
   - 1
@@ -2053,11 +2054,19 @@ MonoBehaviour:
   maxSameLane: 2
   minSpacing: 6
   maxSpacing: 12
-  goalObject: {fileID: 0}
+  traveledDistance: 0
   defaultSpeed: 30
+  minSpeed: 6
+  maxSpeed: 999
+  appearGoalDistance: 100
+  goalSpawnSpacing: 10
   hitObstacleSpeed: 2
   setHitSpeedTime: 0.3
   uponSpeedMultiplier: 0.8
+  missAddSpeed: -5
+  niceAddSpeed: 1
+  greatAddSpeed: 5
+  excellentAddSpeed: 10
 --- !u!1 &1957093425
 GameObject:
   m_ObjectHideFlags: 0
