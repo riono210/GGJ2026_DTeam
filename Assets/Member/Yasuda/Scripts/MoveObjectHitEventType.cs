@@ -14,4 +14,5 @@ public enum MoveObjectHitEventType
     MaskItemB,
     MaskItemC,
     GameOver,
+    Clear,
 }

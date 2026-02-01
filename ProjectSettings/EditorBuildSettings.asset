@@ -11,9 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainStage.unity
     guid: a451dcd2be41f4bf1b1e2b62502703f1
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/ClearScene.unity
+    guid: 0ce2e20e9133e4a2ea16443c80a811ea
   - enabled: 0
     path: Assets/Member/Gushi/Scene/TitleScene.unity
     guid: 511d9578f5736d349ad444798505516e
@@ -23,9 +23,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Member/Gushi/Scene/EndScene.unity
     guid: 1240a2b83adb58d4a82deeb7fb115957
-  - enabled: 0
-    path: Assets/Member/Gushi/Scene/ClearScene.unity
-    guid: 8c6f5896eaa549a4e8ef31a06b20ce9d
   - enabled: 0
     path: Assets/Member/Gushi/Scene/ResultScene.unity
     guid: e2089e8ba7bce8840a0bd884231e522c
