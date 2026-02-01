@@ -4910,6 +4910,7 @@ GameObject:
   - component: {fileID: 684165871756907486}
   - component: {fileID: 7382732501551284975}
   - component: {fileID: 4510663716176061998}
+  - component: {fileID: 3297938672683193}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -5024,6 +5025,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ced0b7d30538438acc5fe58c95b651, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  heartPrefab: {fileID: 8788089433567097611, guid: 0c9fb702b9f484635bb3a39ce9bbc077, type: 3}
+  heartParent: {fileID: 0}
+  heartCount: 3
 --- !u!54 &684165871756907486
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5132,3 +5136,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3297938672683193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7990856358548315494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60d104864e08e40bbba1ae41516c2af5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerGoal
