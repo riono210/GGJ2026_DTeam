@@ -49,14 +49,18 @@ public int numToEmit = 25;
             if (distance < minHardRange)
             {
                 particles.Emit(35);
+                // Notify to Stage
+                spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritExcellent);
             }
             else if (distance < minMediumRange)
             {
                 particles.Emit(10);
+                spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritGreat);
             }
             else if (distance < minEasyRange)
             {
                 particles.Emit(3);
+                spiritHitSubject.OnNext(MoveObjectHitEventType.SpiritNice);
             }
         }
     }

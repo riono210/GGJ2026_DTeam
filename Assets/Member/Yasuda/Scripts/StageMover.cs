@@ -318,6 +318,7 @@ public class StageMover : MonoBehaviour
     
     private void OnSpiritHit(MoveObjectHitEventType eventType)
     {
+        Debug.Log($"Speed Up !!: {eventType}");
         var addSpeed = eventType switch
         {
             MoveObjectHitEventType.SpiritNice => 1,
