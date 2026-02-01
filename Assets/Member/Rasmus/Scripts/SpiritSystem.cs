@@ -6,7 +6,16 @@ using UnityEngine.InputSystem;
 public class SpiritSystem : MonoBehaviour
 {
     PlayerActions playerActions;
-    
+    LayerMask spiritLayerMask;
+
+    [SerializeField] private float minHardRange = 1;
+    [SerializeField] private float minMediumRange = 2;
+    [SerializeField] private float minEasyRange = 3;
+
+    [SerializeField] private ParticleSystem particles;
+
+    private float startZ;
+
     private Subject<MoveObjectHitEventType> spiritHitSubject;
     public Observable<MoveObjectHitEventType> SpiritHitObservable => spiritHitSubject;
     
@@ -15,15 +24,16 @@ public class SpiritSystem : MonoBehaviour
         playerActions = new PlayerActions();
             playerActions.Enable();
             playerActions.gameplay.attack.performed += ctx => Attack(ctx);
+
+        startZ = transform.position.z;
     }
 
+public int numToEmit = 25;
     private void Attack(InputAction.CallbackContext ctx)
     {
-        Debug.Log("Don!");
-        const float maxRange = 3;
-        // TODO MASK FOR SPIRITS!
-        const int spiritLayerMask = 6;
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, maxRange, transform.forward, maxRange, spiritLayerMask);
+
+        spiritLayerMask = LayerMask.GetMask("Spirit");
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, 3, transform.forward, 10, spiritLayerMask);
         if (hits.Length > 0)
         {
             RaycastHit nearestHit = hits[0];
@@ -33,25 +43,23 @@ public class SpiritSystem : MonoBehaviour
                     nearestHit = hit;
             }
 
-            // Set to default layer. This object is no longer registered as spirit
-            nearestHit.transform.gameObject.layer = 0;
-            // TODO: Add effect on the spirit. BOOM!
+            float hitZ = nearestHit.transform.position.z;
+            float distance = Mathf.Abs(hitZ - startZ);
 
-            if (nearestHit.distance < 1)
+            if (distance < minHardRange)
             {
-                // GOOD!
-                Debug.Log("GOOD");
+                particles.Emit(35);
             }
-            else if (nearestHit.distance < 2)
+            else if (distance < minMediumRange)
             {
-                Debug.Log("OK");
+                particles.Emit(10);
             }
-            else if (nearestHit.distance < 3)
+            else if (distance < minEasyRange)
             {
-                // Ehh..
-                Debug.Log("BAD");
+                particles.Emit(3);
             }
         }
     }
+
 
 }

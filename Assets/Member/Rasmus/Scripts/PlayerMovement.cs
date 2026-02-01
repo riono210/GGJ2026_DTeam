@@ -1,4 +1,6 @@
 // For switching lanes
+using System;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,7 +11,7 @@ public enum Lane
 }
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] float laneDistance = 25.0f;
+    [SerializeField] GameObject shadowPrefab;
 
     // Movement
     public float laneSwitchSpeed = 10f;
@@ -18,12 +20,14 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 targetPosition;
     PlayerActions playerActions;
-    InputAction moveAction;
+
+    StageMover stageMover;
 
     Lane currentLane;
     private float movementDelta = 0;
     Vector3 leftPos;
     Vector3 rightPos;
+    float distanceBetweenLanes = 0;
 
     private void Awake()
     {
@@ -31,8 +35,31 @@ public class PlayerMovement : MonoBehaviour
         playerActions.Enable();
         // "performed" happens once on button down, not repeating
         playerActions.gameplay.move.performed += ctx => ReadMovement(ctx);
-        leftPos = transform.position + new Vector3(-laneDistance,0);
-        rightPos = transform.position + new Vector3(laneDistance,0);
+
+        stageMover = FindAnyObjectByType<StageMover>();
+        if (!stageMover)
+        {
+            Debug.LogError("No stageMover found! Movement won't work. Destroying player...");
+            Destroy(this);
+            return;
+        }
+
+        // Player depth but spawnpoint off-set
+        leftPos = transform.position;
+        leftPos.x = stageMover.lanePoints[0]. transform. position.x;
+        rightPos = transform.position;
+        rightPos.x = stageMover.lanePoints[1]. transform. position.x;
+
+        Vector3 lengthVector = leftPos - rightPos;
+        distanceBetweenLanes = lengthVector.magnitude;
+
+        Vector3 l = leftPos;
+        const float yPos = 0.1f;
+        l.y = yPos;
+        Instantiate(shadowPrefab, l, Quaternion.Euler(new Vector3(90, 0, 0)));
+        Vector3 r = rightPos;
+        r.y = yPos;
+        Instantiate(shadowPrefab, r, Quaternion.Euler(new Vector3(90, 0, 0)));
     }
 
     private void Start()
@@ -65,9 +92,9 @@ public class PlayerMovement : MonoBehaviour
     public void SwitchToLane(Lane newLane)
     {
         if (newLane == Lane.Left) 
-            targetPosition = new Vector3(-laneDistance, 0);
+            targetPosition = leftPos;
         else
-            targetPosition = new Vector3(laneDistance, 0);
+            targetPosition = rightPos;
         currentLane = newLane;
     }
 
@@ -88,9 +115,8 @@ public class PlayerMovement : MonoBehaviour
         if (transform.position.x != targetPosition.x)
         {
             // Calculate how far (what %) of the total distance we are at
-            float totalDistanceBetweenLanes = laneDistance * 2;
-            float totalDistanceRemaning = totalDistanceBetweenLanes - distanceToGoal;
-            float percent = totalDistanceRemaning / totalDistanceBetweenLanes;
+            float totalDistanceRemaning = distanceBetweenLanes - distanceToGoal;
+            float percent = totalDistanceRemaning / distanceBetweenLanes;
 
             float bonusSpeed = speedCurve.Evaluate(percent);
 
